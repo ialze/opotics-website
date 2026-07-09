@@ -37,7 +37,7 @@ document.querySelectorAll('.animate-up, .fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Handle Contact Form Submission (Mocking for now until Web3Forms is added)
+// Handle Contact Form Submission to Netlify
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
@@ -51,12 +51,25 @@ if (contactForm) {
         submitBtn.innerText = 'Sending...';
         submitBtn.disabled = true;
 
-        // Simulate network request
-        setTimeout(() => {
+        const formData = new FormData(contactForm);
+
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData).toString(),
+        })
+        .then(() => {
             contactForm.reset();
             formStatus.innerText = 'Thank you! Your message has been sent successfully.';
             formStatus.classList.add('success');
-            
+            formStatus.style.color = '#00ff88';
+        })
+        .catch((error) => {
+            formStatus.innerText = 'Oops! There was a problem submitting your form.';
+            formStatus.classList.remove('success');
+            formStatus.style.color = '#ff4444';
+        })
+        .finally(() => {
             submitBtn.innerText = originalText;
             submitBtn.disabled = false;
             
@@ -64,6 +77,6 @@ if (contactForm) {
                 formStatus.innerText = '';
                 formStatus.classList.remove('success');
             }, 5000);
-        }, 1500);
+        });
     });
 }
