@@ -58,7 +58,8 @@ if (contactForm) {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams(formData).toString(),
         })
-        .then(() => {
+        .then((response) => {
+            if (!response.ok) throw new Error("Network response was not ok");
             contactForm.reset();
             formStatus.innerText = 'Thank you! Your message has been sent successfully.';
             formStatus.classList.add('success');
