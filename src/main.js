@@ -59,15 +59,16 @@ if (contactForm) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         })
-        .then((response) => {
-            if (!response.ok) throw new Error("Network response was not ok");
+        .then(async (response) => {
+            const body = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(body.error || `Server error ${response.status}`);
             contactForm.reset();
             formStatus.innerText = 'Thank you! Your message has been sent successfully.';
             formStatus.classList.add('success');
             formStatus.style.color = '#00ff88';
         })
         .catch((error) => {
-            formStatus.innerText = 'Oops! There was a problem submitting your form.';
+            formStatus.innerText = 'Error: ' + error.message;
             formStatus.classList.remove('success');
             formStatus.style.color = '#ff4444';
         })
