@@ -9,6 +9,9 @@ async function test() {
       user: "solutions@opotics.com",
       pass: "9rFcX44cdmS$E#f",
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   try {
