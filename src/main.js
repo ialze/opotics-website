@@ -52,11 +52,12 @@ if (contactForm) {
         submitBtn.disabled = true;
 
         const formData = new FormData(contactForm);
+        const data = Object.fromEntries(formData.entries());
 
-        fetch("/", {
+        fetch("/.netlify/functions/contact", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(formData).toString(),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
         })
         .then((response) => {
             if (!response.ok) throw new Error("Network response was not ok");
